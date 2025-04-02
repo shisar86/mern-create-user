@@ -44,6 +44,27 @@ app.get("/users/details", async(req,res) => {
     }
 });
 
+app.put("/users/:id", async(req,res) => {
+    try{
+        const { name,email,age} = req.body;
+        const updeatedUser = await User.findByIdAndUpdate(
+            req.params.id, {name,email,age},{new:true}
+        );
+        res.json(updatedUser);
+    } catch(error){
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.delete("/users/:id",async(req,res) => {
+    try{
+        await User.findByIdAndDelete(req.params.id);
+        res.json({ message: "User delted successfully!"});
+    } catch(error){
+        res.status(500).json({error:error.message});
+    }
+});
+
 app.listen(PORT, () =>{
     console.log(`Server running on port${PORT}`);
 });
